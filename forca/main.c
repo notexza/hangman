@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <conio.h>
-
+#include <windows.h>
 
 titulo() {
     // TITULO BLYAT
@@ -57,7 +57,7 @@ registarMenu() {
             break;
         }
         ch = '*' ;
-        printf("%c",ch);
+        printf("%c",ch); // BUG 02: SE USARES A TECLA BACKSPACE PARA APAGAR, ELE LÊ NA MESMA, FIX PLS
     }
 
     FILE *f = fopen("userData.txt", "ab+");
@@ -94,9 +94,10 @@ entrarMenu(char username[10], char password[20]) {
         while(fgets(line, sizeof line, file)) {
                 if(sscanf(line, "%s %s", username2, password2) == 2) {
                     printf("\nUsername e palavra-passe corretos!\n");
+                    Sleep(2500);
                     system("cls");
                     startMenu();
-                } else { // FIX THIS LINE, DOESNT WORK
+                } else { // BUG 01: ESTA LINHA NAO FUNCIONA, FIX PLS
                     printf("\nUsername e palavra-passe incorretos!\n");
                     break;
                 }
