@@ -4,6 +4,9 @@
 #include <conio.h>
 #include <windows.h>
 
+#define TRUE 1
+#define FALSE 0
+
 titulo() {
     // TITULO BLYAT
     printf("   ___                         _        ______\n");
@@ -51,14 +54,15 @@ registarMenu() {
 
     printf("\nIntroduza a sua palavra-passe: ");
     for(i=0;i<19;i++) {
-        ch = getch();
-        password[i] = ch;
-        if(ch==13) {
+        password[i] = _getch();
+
+        if(password[i]==13) {
             break;
-        }
-        ch = '*' ;
-        printf("%c",ch); // BUG 02: SE USARES A TECLA BACKSPACE PARA APAGAR, ELE LÊ NA MESMA, FIX PLS
+        } // BUG 02: Se usas o backspace, ele lê como caractere, tem de apagar o ultimo inserido
+
+        printf("*");
     }
+    password[i]='\0';
 
     FILE *f = fopen("userData.txt", "ab+");
     fprintf(f, "%s %s", username, password);
@@ -66,41 +70,49 @@ registarMenu() {
 
 }
 
-entrarMenu(char username[10], char password[20]) {
+
+entrarMenu() {
     system("cls");
     titulo();
 
-    char username2[10], password2[20], ch;
+    char username[10], password[20], ch;
     int i=0;
 
     printf("\nIntroduza o seu nome: ");
-    scanf("%s", username2);
+    scanf("%s", username);
     printf("\nIntroduza a sua palavra-passe: ");
 
-    for(i=0;i<19;i++) {
-        ch = getch();
-        password2[i] = ch;
-        if(ch==13) {
+     for(i=0;i<19;i++) {
+        password[i] = getch();
+        if(password[i]==13) {
             break;
         }
-        ch = '*' ;
-        printf("%c",ch);
+        printf("*");
     }
+    password[i]='\0';
+    verificarAuth(username, password);
+    _getch();
+    system("PAUSE");
+    return 0;
+}
 
+verificarAuth(char username[10], char password[20]) {
     FILE *file;
     file = fopen("userData.txt", "r");
+    char user2[10], pass2[20], line[128];
+
     if(file) {
-        char line[128];
-        while(fgets(line, sizeof line, file)) {
-                if(sscanf(line, "%s %s", username2, password2) == 2) {
-                    printf("\nUsername e palavra-passe corretos!\n");
-                    Sleep(2500);
-                    system("cls");
-                    startMenu();
-                } else { // BUG 01: ESTA LINHA NAO FUNCIONA, FIX PLS
-                    printf("\nUsername e palavra-passe incorretos!\n");
-                    break;
-                }
+        while(fscanf(file, "%s %s", user2, pass2) == 2) {
+            if((strcmp(username, user2) == 0) && (strcmp(password, pass2) == 0)) {
+                printf("\nUsername e palavra-passe corretos!\n");
+                Sleep(2500);
+                system("cls");
+                startMenu();
+            } else {
+                printf("\nUsername e palavra-passe incorretos!\n");
+                system("PAUSE");
+                entrarMenu(username, password);
+            }
         }
         fclose(file);
     }
