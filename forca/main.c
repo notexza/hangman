@@ -47,6 +47,9 @@ entrarMenu() {
     for(i=0;i<19;i++) {
         ch = getch();
         password[i] = ch;
+        if(ch==13) {
+            break;
+        }
         ch = '*' ;
         printf("%c",ch);
     }
