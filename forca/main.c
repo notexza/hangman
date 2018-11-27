@@ -92,7 +92,7 @@ entrarMenu(char username[10], char password[20]) {
     if(file) {
         char line[128];
         while(fgets(line, sizeof line, file)) {
-                if(sscanf(line, "%s %s", username2, password2) != 2) {
+                if(sscanf(line, "%s %s", username2, password2) == 2) {
                     printf("\nUsername e palavra-passe corretos!\n");
                     system("cls");
                     startMenu();
