@@ -20,7 +20,7 @@
 	<stdlib.h>
 	<time.h>
 
-1548602886 source:c:\users\mario\documents\github\hangman\forca\main.c
+1548613485 source:c:\users\mario\documents\github\hangman\forca\main.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
@@ -28,7 +28,7 @@
 	<windows.h>
 	"player.h"
 
-1548602886 c:\users\mario\documents\github\hangman\forca\player.h
+1548613331 c:\users\mario\documents\github\hangman\forca\player.h
 
 1548602886 source:c:\users\mario\documents\github\hangman\forca\player.c
 	<stdio.h>
