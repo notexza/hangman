@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1548108147 source:c:\users\exza\documents\github\hangman\forca\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<conio.h>
+	<windows.h>
+	"player.h"
+
+1548104386 c:\users\exza\documents\github\hangman\forca\player.h
+
+1548108978 source:c:\users\exza\documents\github\hangman\forca\player.c
+	<stdio.h>
+	<stdlib.h>
+	"player.h"
+

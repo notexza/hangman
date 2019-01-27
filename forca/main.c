@@ -3,6 +3,7 @@
 #include <locale.h>
 #include <conio.h>
 #include <windows.h>
+#include "player.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -337,75 +338,11 @@ void mostrarBoneco(int escolha)
 }
 
 registarMenu() {
-    system("cls");
-    titulo();
-
-    char username[10], password[20], password2[20], ch, ch1;
-    int i=0;
-
-    printf("\nIntroduza o seu nome: ");
-    scanf("%s", username);
-
-    printf("\nIntroduza a sua palavra-passe: ");
-    scanf("%s", password);
-
-    FILE *file;
-
-    if((file = fopen("userData.txt","r"))!=NULL) {
-            // file exists
-            file = fopen("userData.txt", "at");
-            fprintf(file, "%s %s\n", username, password);
-            fclose(file);
-    } else {
-            file = fopen("userData.txt", "a");
-            fprintf(file, "%s %s\n", username, password);
-            fclose(file);
-            //File not found, no memory leak since 'file' == NULL
-            //fclose(file) would cause an error
-    }
-
-    printf("\nRegisto com sucesso!\n");
-    Sleep(2500);
-    system("cls");
-    startMenu();
-
-
+    registar();
 }
 
-
 entrarMenu() {
-    system("cls");
-    titulo();
-
-    char username[10], password[20], ch;
-    char user2[10], pass2[20], line[128];
-    int i=0;
-
-    printf("\nIntroduza o seu nome: ");
-    scanf("%s", user2);
-    printf("\nIntroduza a sua palavra-passe: ");
-    scanf("%s", pass2);
-
-    FILE *file;
-    file = fopen("userData.txt", "r");
-
-    if(file) {
-        while(fgets(line, sizeof line, file)) {
-            if(fscanf(file, "%s %s", user2, pass2) == 2) {
-                printf("\nUsername e palavra-passe corretos!\n");
-                Sleep(2500);
-                system("cls");
-                menuCheck();
-            } else {
-                printf("\nUsername e palavra-passe incorretos!\n");
-                system("PAUSE");
-                entrarMenu();
-            }
-        }
-        fclose(file);
-    }
-    system("PAUSE");
-    return 0;
+    login();
 }
 
 loginSegundoUser() {
