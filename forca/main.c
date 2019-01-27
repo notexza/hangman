@@ -9,6 +9,19 @@
 #define FALSE 0
 
 void mostrarBoneco(int);
+int listaAtual = 0;
+
+int main() {
+    Jogador j[20];
+    loadFile(j);
+    setlocale(LC_ALL, "");
+    startMenu(j);
+}
+
+menuJogo(Jogador j[]) {
+    titulo(j);
+}
+
 
 titulo() {
     // TITULO BLYAT
@@ -22,7 +35,7 @@ titulo() {
     printf("             |___/                                              \n");
 }
 
-startMenu() {
+void startMenu(Jogador j[]) {
     titulo();
 
     int opc;
@@ -36,14 +49,106 @@ startMenu() {
 
     switch(opc) {
         case 1:
-            entrarMenu();
+            entrarMenu(j);
             break;
         case 2:
-            registarMenu();
+            registarMenu(j);
             break;
     }
 }
 
+
+void registarMenu(Jogador j[]) {
+    char username1[21];
+    char password1[21];
+    int i;
+    char ch;
+
+    fflush(stdin);
+    system("cls");
+
+    printf("Username: ");
+    gets(username1);
+    fflush(stdin);
+    printf("Password: ");
+    for(i=0;(ch=getch())!='\r';)
+    {
+        if(ch == 13) {
+            break;
+        }
+
+        if(ch != 8) {
+            password1[i]=ch;
+            printf("*");
+            i++;
+        } else {
+            i--;
+            if(i<0) {
+                i++;
+            } else {
+                printf("\b \b");
+            }
+        }
+    }
+    password1[i] = '\0';
+    fflush(stdin);
+
+    strcpy(j[listaAtual].username, username1);
+    strcpy(j[listaAtual].password, password1);
+    listaAtual++;
+    writeFile(j);
+}
+
+void entrarMenu(Jogador j[]) {
+    fflush(stdin);
+    char user1[50];
+    char pass1[50];
+    int i;
+    char ch;
+    int found=0;
+    system("cls");
+    titulo();
+    printf("Username: ");
+    gets(user1);
+    fflush(stdin);
+
+    for(i=0;i<listaAtual;i++){
+        if(strcmp(j[i].username,user1)==0){
+            found=1;
+            break;
+        }
+    }
+    if(found==1){
+        printf("Password: ");
+    for(i=0;(ch=getch())!='\r';)
+    {
+        if(ch == 13) {
+            break;
+        }
+
+        if(ch != 8) {
+            pass1[i]=ch;
+            printf("*");
+            i++;
+        } else {
+            i--;
+            if(i<0) {
+                i++;
+            } else {
+                printf("\b \b");
+            }
+        }
+    }
+    pass1[i] = '\0';
+    fflush(stdin);
+
+        for(i=0; i<listaAtual; i++) {
+            if(strcmp(j[i].password, pass1) == 0) {
+                menuCheck(j);
+            }
+        }
+    }
+}
 
 
 iniciarJogo() {
@@ -337,50 +442,61 @@ void mostrarBoneco(int escolha)
     return;
 }
 
-registarMenu() {
-    registar();
-}
 
-entrarMenu() {
-    login();
-}
-
-loginSegundoUser() {
+void loginSegundoUser(Jogador j[]) {
+    fflush(stdin);
+    char user1[50];
+    char pass1[50];
+    int i;
+    char ch;
+    int found=0;
     system("cls");
     titulo();
+    printf("Username: ");
+    gets(user1);
+    fflush(stdin);
 
-    char username[10], password[20], ch;
-    char user2[10], pass2[20], line[128];
-    int i=0;
+    for(i=0;i<listaAtual;i++){
+        if(strcmp(j[i].username,user1)==0){
+            found=1;
+            break;
+        }
+    }
+    if(found==1){
+        printf("Password: ");
+    for(i=0;(ch=getch())!='\r';)
+    {
+        if(ch == 13) {
+            break;
+        }
 
-    printf("\nIntroduza username do segundo jogador: ");
-    scanf("%s", user2);
-    printf("\nIntroduza a sua palavra-passe: ");
-    scanf("%s", pass2);
-
-    FILE *file;
-    file = fopen("userData.txt", "r");
-
-    if(file) {
-        while(fgets(line, sizeof line, file)) {
-            if(fscanf(file, "%s %s", user2, pass2) == 2) {
-                printf("\nUsername e palavra-passe corretos!\n");
-                Sleep(2500);
-                system("cls");
-                iniciarJogo();
+        if(ch != 8) {
+            pass1[i]=ch;
+            printf("*");
+            i++;
+        } else {
+            i--;
+            if(i<0) {
+                i++;
             } else {
-                printf("\nUsername e palavra-passe incorretos!\n");
-                system("PAUSE");
-                loginSegundoUser();
+                printf("\b \b");
             }
         }
-        fclose(file);
+    }
+    pass1[i] = '\0';
+    fflush(stdin);
+
+        for(i=0; i<listaAtual; i++) {
+            if(strcmp(j[i].password, pass1) == 0) {
+                iniciarJogo();
+            }
+        }
     }
     system("PAUSE");
     return 0;
 }
 
-menuCheck() {
+void menuCheck(Jogador j[]) {
     int opc;
     system("cls");
     titulo();
@@ -390,21 +506,29 @@ menuCheck() {
         case 1:
             break;
         case 2:
-            loginSegundoUser();
+            loginSegundoUser(j);
             break;
     }
 }
 
-verificarAuth(char username[10], char password[20]) {
-    // PARTE 2
+void loadFile(Jogador j[]){
+    FILE *f;
+    f=fopen("users.txt","r");
+
+    while(fscanf(f, "%20s %20s", j[listaAtual].username,j[listaAtual].password) != EOF){
+        listaAtual++;
+    }
+
+    fclose(f);
 }
 
-menuJogo() {
-    titulo();
+void writeFile(Jogador j[]){
+    FILE *f;
+    f=fopen("users.txt","w");
+
+    for(int i=0;i<listaAtual;i++){
+        fprintf(f,"%-20s %-20s\n", j[i].username, j[i].password);
+    }
+    fclose(f);
 }
 
-main()
-{
-    setlocale(LC_ALL, "");
-    startMenu();
-}
