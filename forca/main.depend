@@ -14,3 +14,24 @@
 	<stdlib.h>
 	"player.h"
 
+1548603705 source:c:\users\mario\desktop\afp\untitled1.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
+
+1548602886 source:c:\users\mario\documents\github\hangman\forca\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<conio.h>
+	<windows.h>
+	"player.h"
+
+1548602886 c:\users\mario\documents\github\hangman\forca\player.h
+
+1548602886 source:c:\users\mario\documents\github\hangman\forca\player.c
+	<stdio.h>
+	<stdlib.h>
+	"player.h"
+
