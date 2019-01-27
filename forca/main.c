@@ -9,6 +9,7 @@
 #define TRUE 1
 #define FALSE 0
 #define TAM 80
+#define MAX 256
 
 void mostrarBoneco(int);
 int listaAtual = 0;
@@ -44,7 +45,9 @@ void startMenu(Jogador j[]) {
 
     printf("1 - Entrar\n");
     printf("2 - Registar\n");
-    printf("3 - Sair\n");
+    printf("3 - Editar User\n");
+    printf("4 - Apagar User\n");
+    printf("5 - Sair\n");
     printf("\n");
     printf("Escolha uma opção: ");
     scanf("%d", &opc);
@@ -56,7 +59,82 @@ void startMenu(Jogador j[]) {
         case 2:
             registarMenu(j);
             break;
+        case 3:
+            editarUser(j);
+            break;
+        case 4:
+            deleteUser(j);
+            break;
+        default:
+            break;
     }
+}
+
+void editarUser(Jogador j[]) {
+    int escolha;
+
+    for(int i=0;i<listaAtual;i++){
+        printf("%d - %s\n",i,j[i].username);
+    }
+
+    printf("Escolha o ID do User que quer alterar: ");
+    scanf("%d",&escolha);
+
+    char newUser[21];
+    char newPass[21];
+
+
+    fflush(stdin);
+    system("cls");
+    printf("Username: ");
+    gets(newUser);
+    fflush(stdin);
+    printf("Password: ");
+    gets(newPass);
+    fflush(stdin);
+
+    strcpy(j[escolha].username,newUser);
+    strcpy(j[escolha].password,newPass);
+    writeFile(j);
+}
+
+void deleteUser(Jogador j[]) {
+    for(int i=0;i<listaAtual;i++){
+        printf("%d - %s\n",i,j[i].username);
+    }
+
+    int lno, ctr = 0;
+        char ch;
+        FILE *fptr1, *fptr2;
+        char str[MAX], temp[] = "temp.txt";
+        char fname[] = "users.txt";
+
+        fptr1 = fopen("users.txt", "r");
+        fptr2 = fopen(temp, "w"); // open the temporary file in write mode
+
+        printf("Escolha o ID do User que quer apagar: ");
+        scanf("%d", &lno);
+
+		lno++;
+        // copy all contents to the temporary file except the specific line
+        while (!feof(fptr1))
+        {
+            strcpy(str, "\0");
+            fgets(str, MAX, fptr1);
+            if (!feof(fptr1))
+            {
+                ctr++;
+                /* skip the line at given line number */
+                if (ctr != lno)
+                {
+                    fprintf(fptr2, "%s", str);
+                }
+            }
+        }
+        fclose(fptr1);
+        fclose(fptr2);
+        remove(fname);  		// remove the original file
+        rename(temp, fname); 	// rename the temporary file to original name
 }
 
 
